@@ -17,7 +17,7 @@ import tools
 #这里首先新建一个类用于存储所需的各种常数
 class Const():
     '''程序中所使用的常数均可在这里查询或统一修改'''
-    Version = '0.1.0'
+    Version = '0.1.0-alpha'
     Project_Name = 'Py实用工具盒'
     #以下是格式信息，请至style.qss中修改
     #Card_Hlen = '110px'
