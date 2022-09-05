@@ -1,10 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# @Date    : 2016-05-15 23:50:31
-# @Author  : xchaoinfo (xchaoinfo@qq.com)
-# @Link    : https://github.com/xchaoinfo
-# @Version : v.0.0
-"""csv 和 excel 快速转换的小工具"""
+#这个模块负责进行格式转换
 
 import openpyxl
 import csv
@@ -26,7 +20,7 @@ def xlsx_to_csv(fn):
     sheet_name = wb.get_sheet_names()
     # print(sheet_name)  # 查看 excel 共有几张表
     sheet = wb[sheet_name[0]]  # 选择操作 excel 文件的第一张表
-    with open('result.csv', 'w', newline='', encoding='utf-8') as fw:
+    with open(f'./output/result.csv', 'w', newline='', encoding='utf-8') as fw:
         ww = csv.writer(fw)
         for r in sheet.rows:
             row = [i.value for i in r]
@@ -36,7 +30,7 @@ def pdf_to_txt(fn):
     with pdfplumber.open(fn) as pdf:
         for page in pdf.pages:
             txtdata = page.extract_text()
-            with open('result.txt', 'w', encoding='utf-8') as fw:
+            with open(f'./output/result.txt', 'w', encoding='utf-8') as fw:
                 fw.write(txtdata)
 
 def main(fil, method = 0):

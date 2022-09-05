@@ -13,7 +13,7 @@ def main(a):
     qr.add_data(a)
     qr.make(fit=True)
     img = qr.make_image()
-    img.save("二维码.png")
+    img.save(f"./output/二维码.png")
 
 if __name__ == '__main__':
     main(None)

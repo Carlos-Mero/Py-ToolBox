@@ -5,11 +5,12 @@ from main import Tools
 import os
 from PyQt6.QtWidgets import (QPushButton, QWidget, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, 
 QGridLayout, QLineEdit, QFileDialog, QComboBox, QHBoxLayout, QColorDialog, QFontDialog)
+
 from Modules import learn
 from Modules import format_convert
 from Modules import make_qrcode
 from Modules import word_cloud
-from Modules import OCR_tesseract
+from Modules import img_cut
 
 #这里制作一个列表，列表中将存储软件中所有能用到的工具
 def Create_Tool_List():
@@ -17,9 +18,9 @@ def Create_Tool_List():
     Tools_List = []
     Tools_List.append(Welcome_Init())
     Tools_List.append(THU_Learn_Init())
+    Tools_List.append(Img_Cut_Init())
     Tools_List.append(Word_Cloud_Init())
     Tools_List.append(Quick_QR_Init())
-    Tools_List.append(OCR_Word_Init())
     Tools_List.append(Csv_Convert_Init())
     Tools_List.append(Performance_Monitor_Init())
     Tools_List.append(Img_Mark_Init())
@@ -83,6 +84,32 @@ def THU_Learn_Init():
     Lay.addWidget(Start_Download, 1, 1)
     THU_Learn_Tool.widget.setLayout(Lay)
     return THU_Learn_Tool
+
+def Img_Cut_Init():
+    '''这是由Yellow_GGG编写的图片裁剪工具'''
+    Img_Cut_Tool = Tools(Img_Cut)
+    Img_Cut_Tool.title = '图像分切'
+    Img_Cut_Tool.description = '''
+这是一个用于裁剪图片的小工具，
+输入切分的大小（像素）后即可
+选择图像并进行切分。
+尤其适用于切割2D游戏素材哦！
+'''
+    Img_Cut_Tool.parameters = [0]
+    Img_Cut_Tool.source = 'Yellow_GGG'
+    Img_Cut_Tool.widget = QWidget()
+    Lay = QVBoxLayout()
+
+    Scale_Select = QLineEdit()
+    Scale_Select.setPlaceholderText('切分尺度（像素）……')
+    Scale_Select.textChanged.connect(lambda: Img_Cut_Tool.parameters.__setitem__(0, int(Scale_Select.text())))
+    Button = QPushButton('选定分切')
+    Button.clicked.connect(Img_Cut_Tool.Run)
+    Lay.addWidget(Scale_Select)
+    Lay.addWidget(Button)
+
+    Img_Cut_Tool.widget.setLayout(Lay)
+    return Img_Cut_Tool
 
 def Word_Cloud_Init():
     '''这是由本小组成员开发的由本地文档快速生成词云的小工具'''
@@ -149,22 +176,6 @@ def Quick_QR_Init():
     QR.widget.setLayout(QR.Layout)
 
     return QR
-
-def OCR_Word_Init():
-    '''这是由本小组成员开发的图像文字识别工具'''
-    OCR = Tools(OCR_Word)
-    OCR.title = '图像文字识别'
-    OCR.description = '''
-这一小工具可以实现快速提取
-本地图片文件中的文字
-
-提取结果将输出到控制台当中
-    '''
-    OCR.parameters = []
-    OCR.source = '_01小组'
-    OCR.widget = QPushButton('开始运行')
-    OCR.widget.clicked.connect(OCR.Run)
-    return OCR
 
 def Csv_Convert_Init():
     '''这是由本小组进行收集封装的文件格式转换工具'''
@@ -316,6 +327,12 @@ def Performance_Monitor_Init():
 
     return PM
 
+def Img_Cut(Parameters = []):
+    '''这一工具用于快速裁切图片'''
+    ui = QFileDialog()
+    Path = ui.getOpenFileUrl()[0].path()
+    img_cut.main(Path, Parameters[0])
+
 def Performance_Monitor(Parameters = []):
     '''这一脚本可以快速调用Mac上的实用性能监视工具，需要输入管理员密码以使用'''
     os.system('sudo asitop')
@@ -352,12 +369,6 @@ def Csv_Convert(Parameters = []):
     Path = ui.getOpenFileUrl()[0].path()
     Parameters[0] = Path
     format_convert.main(Parameters[0], Parameters[1])
-
-def OCR_Word(Parameters = []):
-    '''这是一个用于识别图片中文字的小工具'''
-    ui = QFileDialog()
-    Path = ui.getOpenFileUrl()[0].path()
-    OCR_tesseract.main(Path)
 
 def Make_Qrcode(Parameters = []):
     '''这一脚本用于将链接快速转换为二维码'''
