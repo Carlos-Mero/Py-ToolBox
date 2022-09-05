@@ -1,0 +1,14 @@
+PyQt6
+openpyxl
+pyexcelerate
+tqdm
+bs4
+pillow
+python-docx
+jieba
+matplotlib
+numpy
+pytesseract
+opencv-python
+pdfplumber
+wordcloud
